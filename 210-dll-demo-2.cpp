@@ -23,6 +23,68 @@ public:
     // constructor
     DoublyLinkedList() { head = nullptr; tail = nullptr; }
 
+    void delete_pos(int position) {
+        if (position < 0) {
+            cout << "Position must be >= 0." << endl;
+            return;
+        }
+
+        if (!head) return; // Empty list
+
+        Node* temp = head;
+        for (int i = 0; i < position && temp; ++i)
+            temp = temp->next;
+
+        if (!temp) {
+            cout << "Position exceeds list size. Node not deleted.\n";
+            return;
+        }
+
+        if (temp->prev) {
+            temp->prev->next = temp->next;
+        } else {
+            head = temp->next; // Deleting the head
+        }
+
+        if (temp->next) {
+            temp->next->prev = temp->prev;
+        } else {
+            tail = temp->prev; // Deleting the tail
+        }
+
+        delete temp;
+    }
+
+    void pop_front() {
+        if (!head) return; // Empty list
+
+        Node* temp = head;
+        head = head->next;
+
+        if (head)
+            head->prev = nullptr;
+        else
+            tail = nullptr; // List is now empty
+
+        delete temp;
+    }
+
+    void pop_back() {
+        if (!tail) return; // Empty list
+
+        Node* temp = tail;
+        tail = tail->prev;
+
+        if (tail)
+            tail->next = nullptr;
+        else
+            head = nullptr; // List is now empty
+
+        delete temp;
+    }
+
+
+
     void push_back(int value) {
         Node* newNode = new Node(value);
         if (!tail)  // if there's no tail, the list is empty
@@ -76,7 +138,7 @@ public:
         temp->next = newNode;
     }
 
-    void delete_node(int value) {
+    void delete_val(int value) {
         if (!head) return; // Empty list
 
         Node* temp = head;
